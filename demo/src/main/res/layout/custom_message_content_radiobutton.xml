@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="18dp"
+        android:layout_marginLeft="15dp"
+        android:gravity="left|center_vertical"
+        android:orientation="vertical" >
+
+        <!--<RadioButton-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="15dp"-->
+            <!--android:text="开始玩还不到半年"-->
+            <!--android:enabled="true"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:textSize="@dimen/text_size_14" />-->
+
+
+    </RadioGroup>
+</RelativeLayout>

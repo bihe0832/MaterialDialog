@@ -1,15 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    def app = rootProject.ext.android
+    compileSdkVersion app.compileSdkVersion as int
+    buildToolsVersion app.buildToolsVersion
 
     defaultConfig {
-        applicationId "me.drakeet.mddemo"
-        minSdkVersion 9
-        targetSdkVersion 22
-        versionCode 16
-        versionName "1.2.8"
+        applicationId app.applicationId
+        minSdkVersion app.minSdkVersion as int
+        targetSdkVersion app.targetSdkVersion as int
+        versionName app.versionName
+        versionCode app.versionCode as int
     }
     buildTypes {
         release {

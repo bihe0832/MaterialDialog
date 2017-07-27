@@ -560,5 +560,9 @@ public class MaterialDialog {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
     }
+
+    public AlertDialog getAlertDialog(){
+        return  mAlertDialog;
+    }
 }
 

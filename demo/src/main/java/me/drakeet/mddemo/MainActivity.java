@@ -13,8 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import me.drakeet.materialdialog.MaterialDialog;
 
@@ -152,18 +161,110 @@ public class MainActivity extends ActionBarActivity {
                 alert.show();
                 break;
             }
-            case R.id.button_set_contentViewById: {
-                final MaterialDialog alert = new MaterialDialog(this).setTitle(
-                        "MaterialDialog")
-                                                                     .setContentView(
-                                                                             R.layout.custom_message_content);
+            case R.id.button_set_contentView_radioButton: {
 
-                alert.setPositiveButton("OK", new View.OnClickListener() {
-                    @Override public void onClick(View v) {
-                        alert.dismiss();
+                final LinkedHashMap<Integer,String> dataList = new LinkedHashMap<>();
+                for (int j = 10; j < 25; j++) {
+                    dataList.put(j,"Item"+j);
+                }
+                int drfaultChecked = 15;
+
+                final MaterialDialog mMaterialDialog = new MaterialDialog(this);
+                mMaterialDialog.setTitle("MaterialDialog")
+                        .setContentView(R.layout.custom_message_content_radiobutton)
+                        .setPositiveButton("OK", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mMaterialDialog.dismiss();
+                                RadioGroup group = (RadioGroup)mMaterialDialog.getAlertDialog().findViewById(R.id.radio_group);
+                                Toast.makeText(
+                                        MainActivity.this,
+                                        "you select " + group.getCheckedRadioButtonId() + " and value is:"+dataList.get(group.getCheckedRadioButtonId()),
+                                        Toast.LENGTH_LONG
+                                ).show();
+
+                            }
+                        })
+                        .show();
+                RadioGroup group = (RadioGroup)mMaterialDialog.getAlertDialog().findViewById(R.id.radio_group);
+                group.removeAllViews();
+
+                LinearLayout.LayoutParams params_rb = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                int margin = ViewUtils.dip2px(this,10);
+                params_rb.setMargins(margin, margin, 0, 0);
+
+                for (Map.Entry<Integer, String> entry : dataList.entrySet()) {
+                    RadioButton tempButton = new RadioButton(mMaterialDialog.getAlertDialog().getContext());
+                    tempButton.setId(entry.getKey());
+                    tempButton.setText(entry.getValue());
+                    tempButton.setPadding(15,0,0,0);
+                    group.addView(tempButton, params_rb);
+                    if(drfaultChecked == entry.getKey()){
+                        group.check(entry.getKey());
                     }
-                });
-                alert.show();
+                }
+                break;
+            }
+            case R.id.button_set_contentView_checkbox: {
+                final LinkedHashMap<Integer,String> dataList = new LinkedHashMap<>();
+                for (int j = 10; j < 25; j++) {
+                    dataList.put(j,"Item"+j);
+                }
+                final ArrayList<Integer> checkValues = new ArrayList<>();
+                checkValues.add(12);
+                checkValues.add(15);
+
+                final MaterialDialog mMaterialDialog = new MaterialDialog(this);
+
+                mMaterialDialog.setTitle("MaterialDialog")
+                        .setContentView(R.layout.custom_message_content_checkbox)
+                        .setPositiveButton("OK", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mMaterialDialog.dismiss();
+                                String result  = "";
+                                for (int a: checkValues) {
+                                    result += "you select " + a + " and value is:" + dataList.get(a) + "\n";
+                                }
+                                Toast.makeText(
+                                        MainActivity.this,
+                                        result,
+                                        Toast.LENGTH_LONG
+                                ).show();
+                            }
+                        })
+                        .show();
+
+                LinearLayout group = (LinearLayout)mMaterialDialog.getAlertDialog().findViewById(R.id.gameTagLayout);
+                group.removeAllViews();
+
+                LinearLayout.LayoutParams params_rb = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                final int margin = ViewUtils.dip2px(this,10);
+                params_rb.setMargins(margin, margin, 0, 0);
+
+
+                for (Map.Entry<Integer, String> entry : dataList.entrySet()) {
+                    CheckBox tempButton = new CheckBox(mMaterialDialog.getAlertDialog().getContext());
+                    tempButton.setText(entry.getValue());
+                    tempButton.setId(entry.getKey());
+                    tempButton.setPadding(15,0,0,0);
+                    if(checkValues.contains(entry.getKey())){
+                        tempButton.setChecked(true);
+                    }
+                    tempButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                            if(b){
+                                checkValues.add((Integer)compoundButton.getId());
+                            }else{
+                                if(checkValues.contains(compoundButton.getId())){
+                                    checkValues.remove((Integer)compoundButton.getId());
+                                }
+                            }
+                        }
+                    });
+                    group.addView(tempButton, params_rb);
+                }
                 break;
             }
             case R.id.button_set_notitile: {
